@@ -1,0 +1,19 @@
+digraph F1 {
+  rankdir=TB; fontname="Helvetica"; node [fontname="Helvetica" fontsize=11]; edge [fontname="Helvetica" fontsize=10];
+  s [label="Start" shape=oval style=filled fillcolor="#dbe8ff"];
+  a [label="Patient opens booking form\n(choose doctor and date)" shape=box];
+  b [label="Browser fetches free slots (/api/slots)" shape=box];
+  c [label="Patient fills form and submits" shape=box];
+  d [label="Server validates fields,\nemail, phone, date, slot" shape=diamond];
+  e [label="Doctor exists and active?" shape=diamond];
+  f [label="Begin transaction\nINSERT appointment" shape=box];
+  g [label="UNIQUE slot conflict?" shape=diamond];
+  h [label="Commit, redirect to\nconfirmation with appointment ID" shape=box style=filled fillcolor="#e6f6ec"];
+  r1 [label="Show validation errors\n(HTTP 400)" shape=box style=filled fillcolor="#fdecea"];
+  r2 [label="Show 'doctor unavailable'" shape=box style=filled fillcolor="#fdecea"];
+  r3 [label="Rollback, show 'slot just taken'" shape=box style=filled fillcolor="#fdecea"];
+  t [label="End" shape=oval style=filled fillcolor="#dbe8ff"];
+  s->a->b->c->d; d->r1 [label="invalid"]; d->e [label="valid"];
+  e->r2 [label="no"]; e->f [label="yes"]; f->g; g->r3 [label="yes"]; g->h [label="no"];
+  h->t; r1->t; r2->t; r3->t;
+}

@@ -1,0 +1,14 @@
+digraph ARCH {
+  rankdir=TB; fontname="Helvetica"; nodesep=0.5; ranksep=0.9;
+  node [fontname="Helvetica" fontsize=12 shape=box style="rounded,filled" fillcolor="#eaf2ff" color="#12326b"];
+  edge [fontname="Helvetica" fontsize=10];
+  subgraph cluster_c { label="Presentation layer (browser)"; style=dashed; color="#5f6b85";
+    UI [label="HTML templates\nCSS / JavaScript"]; }
+  subgraph cluster_s { label="Application layer (Flask)"; style=dashed; color="#5f6b85";
+    R [label="Routes\nroutes.py / admin.py"]; V [label="Validation\nservices/validation.py"]; M [label="Data access\nmodels.py"]; }
+  subgraph cluster_d { label="Data layer"; style=dashed; color="#5f6b85";
+    DB [label="MySQL\ndoctors | appointments | admins" shape=cylinder fillcolor="#dbe8ff"]; }
+  UI -> R [label="HTTP request + CSRF token"]; R -> UI [label="rendered page / JSON"];
+  R -> V [label="form data"]; V -> R [label="clean data / errors"];
+  R -> M [label="function calls"]; M -> DB [label="parameterized SQL"]; DB -> M [label="rows"];
+}

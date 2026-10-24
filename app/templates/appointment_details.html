@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Appointment {{ appt.appointment_id|apt_code }} | MediBook{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container narrow">
+    <div class="form-card">
+      <h1 class="page-title">Appointment {{ appt.appointment_id|apt_code }}</h1>
+      <dl class="details">
+        <dt>Status</dt><dd><span class="badge badge-{{ appt.status|lower }}">{{ appt.status }}</span></dd>
+        <dt>Patient</dt><dd>{{ appt.patient_name }}</dd>
+        <dt>Contact</dt><dd>{{ appt.patient_email }} &middot; {{ appt.patient_phone }}</dd>
+        <dt>Doctor</dt><dd>{{ appt.doctor_name }} ({{ appt.specialization }})</dd>
+        <dt>Date</dt><dd>{{ appt.appointment_date|pretty_date }}</dd>
+        <dt>Time</dt><dd>{{ appt.appointment_time|pretty_time }}</dd>
+        <dt>Reason</dt><dd>{{ appt.reason }}</dd>
+      </dl>
+      {% if appt.status == 'Booked' %}
+      <form method="post" action="{{ url_for('main.cancel') }}" data-confirm="Cancel this appointment? This cannot be undone.">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="appointment_id" value="{{ appt.appointment_id }}">
+        <input type="hidden" name="email" value="{{ appt.patient_email }}">
+        <button class="btn btn-danger" type="submit">Cancel Appointment</button>
+      </form>
+      <p class="muted small">Cancellation is verified using your appointment ID and email. Email verification is a simple academic safeguard and is not the same as secure user authentication.</p>
+      {% endif %}
+      <p><a href="{{ url_for('main.appointments') }}">&larr; Look up another appointment</a></p>
+    </div>
+  </div>
+</section>
+{% endblock %}

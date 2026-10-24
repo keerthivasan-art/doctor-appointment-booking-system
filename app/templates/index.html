@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <p class="eyebrow">Online appointments</p>
+      <h1>Book your doctor appointment in a few clicks</h1>
+      <p class="lead">Browse doctors by specialization, pick a free time slot and receive an appointment ID instantly. Everything is stored in a MySQL database.</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="{{ url_for('main.book') }}">Book Appointment</a>
+        <a class="btn btn-outline" href="{{ url_for('main.doctors') }}">View Doctors</a>
+      </div>
+    </div>
+    <div class="stats-card" aria-label="Live statistics from the database">
+      <div class="stat"><span class="stat-num">{{ stats.active_doctors }}</span><span>Active doctors</span></div>
+      <div class="stat"><span class="stat-num">{{ stats.specializations }}</span><span>Specializations</span></div>
+      <div class="stat"><span class="stat-num">{{ stats.total_appointments }}</span><span>Appointments booked</span></div>
+      <div class="stat"><span class="stat-num">{{ stats.upcoming }}</span><span>Upcoming visits</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">Features</h2>
+    <div class="card-grid">
+      <article class="card"><h3>Doctor directory</h3><p>Search by name and filter by specialization to find the right doctor.</p></article>
+      <article class="card"><h3>Live slot checking</h3><p>Only free time slots can be booked. Double booking is blocked by the database itself.</p></article>
+      <article class="card"><h3>Easy cancellation</h3><p>Cancel using your appointment ID and booking email. History is kept, never deleted.</p></article>
+      <article class="card"><h3>Admin tools</h3><p>Password-protected area to manage doctors and update appointment status.</p></article>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,15 @@
+digraph F2 {
+  rankdir=TB; fontname="Helvetica"; node [fontname="Helvetica" fontsize=11]; edge [fontname="Helvetica" fontsize=10];
+  s [label="Start" shape=oval style=filled fillcolor="#dbe8ff"];
+  a [label="Patient enters appointment ID and email" shape=box];
+  b [label="ID and email both match a record?" shape=diamond];
+  c [label="Show appointment details" shape=box];
+  d [label="Status = Booked?" shape=diamond];
+  e [label="Patient confirms cancellation" shape=box];
+  f [label="UPDATE status = 'Cancelled'\nWHERE status = 'Booked'" shape=box];
+  g [label="Show success message\n(slot becomes free again)" shape=box style=filled fillcolor="#e6f6ec"];
+  r1 [label="Show 'no appointment found'\n(nothing is changed)" shape=box style=filled fillcolor="#fdecea"];
+  r2 [label="Show 'already cancelled/completed'" shape=box style=filled fillcolor="#fdecea"];
+  t [label="End" shape=oval style=filled fillcolor="#dbe8ff"];
+  s->a->b; b->r1 [label="no"]; b->c [label="yes"]; c->d; d->r2 [label="no"]; d->e [label="yes"]; e->f->g->t; r1->t; r2->t;
+}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Booking Confirmed | MediBook{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container narrow">
+    <div class="form-card confirm">
+      <div class="check" aria-hidden="true">&#10003;</div>
+      <h1 class="page-title">Appointment booked successfully</h1>
+      <p class="muted">Please save your appointment ID. You need it, with your email, to view or cancel the booking.</p>
+      <p class="apt-id">{{ appt.appointment_id|apt_code }}</p>
+      <dl class="details">
+        <dt>Patient</dt><dd>{{ appt.patient_name }}</dd>
+        <dt>Doctor</dt><dd>{{ appt.doctor_name }}</dd>
+        <dt>Specialization</dt><dd>{{ appt.specialization }}</dd>
+        <dt>Date</dt><dd>{{ appt.appointment_date|pretty_date }}</dd>
+        <dt>Time</dt><dd>{{ appt.appointment_time|pretty_time }}</dd>
+        <dt>Status</dt><dd><span class="badge badge-{{ appt.status|lower }}">{{ appt.status }}</span></dd>
+      </dl>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="{{ url_for('main.appointments') }}">View Appointments</a>
+        <a class="btn btn-outline" href="{{ url_for('main.index') }}">Back to Home</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

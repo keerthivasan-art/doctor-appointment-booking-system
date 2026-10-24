@@ -1,0 +1,25 @@
+digraph DFD1 {
+  rankdir=TB; fontname="Helvetica"; nodesep=0.55; ranksep=1.0;
+  node [fontname="Helvetica" fontsize=11]; edge [fontname="Helvetica" fontsize=9];
+  P [label="Patient" shape=box style=filled fillcolor="#eaf2ff"];
+  A [label="Administrator" shape=box style=filled fillcolor="#eaf2ff"];
+  P1 [label="1.0\nSelect doctor\n& view slots" shape=ellipse style=filled fillcolor="#dbe8ff"];
+  P2 [label="2.0\nValidate\nbooking" shape=ellipse style=filled fillcolor="#dbe8ff"];
+  P3 [label="3.0\nStore\nappointment\n(transaction)" shape=ellipse style=filled fillcolor="#dbe8ff"];
+  P4 [label="4.0\nView\nappointment" shape=ellipse style=filled fillcolor="#dbe8ff"];
+  P5 [label="5.0\nCancel\nappointment" shape=ellipse style=filled fillcolor="#dbe8ff"];
+  P6 [label="6.0\nAdmin\nmanagement" shape=ellipse style=filled fillcolor="#dbe8ff"];
+  D1 [label="D1  doctors" shape=box style="filled" fillcolor="#f3f6fb" peripheries=2];
+  D2 [label="D2  appointments" shape=box style="filled" fillcolor="#f3f6fb" peripheries=2];
+  D3 [label="D3  admins" shape=box style="filled" fillcolor="#f3f6fb" peripheries=2];
+  P -> P1 [label="search / filter"]; D1 -> P1 [label="active doctors"]; D2 -> P1 [label="taken slots"];
+  P1 -> P [label="doctor list, slots"];
+  P -> P2 [label="booking form"]; D1 -> P2 [label="doctor active?"];
+  P2 -> P [label="validation errors"]; P2 -> P3 [label="valid data"];
+  P3 -> D2 [label="INSERT"]; P3 -> P [label="appointment ID /\nslot-taken error"];
+  P -> P4 [label="ID + email"]; D2 -> P4 [label="appointment row"]; P4 -> P [label="details"];
+  P -> P5 [label="ID + email"]; P5 -> D2 [label="UPDATE status=Cancelled"]; P5 -> P [label="result"];
+  A -> P6 [label="credentials, doctor data,\nstatus change"]; D3 -> P6 [label="password hash"];
+  P6 -> D1 [label="INSERT / UPDATE"]; P6 -> D2 [label="UPDATE status"]; D2 -> P6 [label="appointments"];
+  P6 -> A [label="lists, messages"];
+}

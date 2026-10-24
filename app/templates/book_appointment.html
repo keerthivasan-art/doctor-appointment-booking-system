@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Book Appointment | MediBook{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container narrow">
+    <h1 class="page-title">Book an Appointment</h1>
+    <form id="booking-form" class="form-card" method="post" action="{{ url_for('main.book') }}" novalidate>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="form-grid">
+        <div class="field">
+          <label for="patient_name">Patient name</label>
+          <input type="text" id="patient_name" name="patient_name" required maxlength="100" autocomplete="name" value="{{ form.get('patient_name', '') }}">
+        </div>
+        <div class="field">
+          <label for="patient_email">Email address</label>
+          <input type="email" id="patient_email" name="patient_email" required maxlength="120" autocomplete="email" value="{{ form.get('patient_email', '') }}">
+        </div>
+        <div class="field">
+          <label for="patient_phone">Phone number</label>
+          <input type="tel" id="patient_phone" name="patient_phone" required inputmode="numeric" placeholder="10-digit mobile number" autocomplete="tel" value="{{ form.get('patient_phone', '') }}">
+        </div>
+        <div class="field">
+          <label for="doctor_id">Doctor</label>
+          <select id="doctor_id" name="doctor_id" required>
+            <option value="">Select a doctor</option>
+            {% for d in doctors %}
+              <option value="{{ d.doctor_id }}" {% if form.get('doctor_id', '')|string == d.doctor_id|string %}selected{% endif %}>{{ d.name }} &mdash; {{ d.specialization }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="field">
+          <label for="appointment_date">Appointment date</label>
+          <input type="date" id="appointment_date" name="appointment_date" required min="{{ today }}" value="{{ form.get('appointment_date', '') }}">
+        </div>
+        <div class="field">
+          <label for="appointment_time">Time slot</label>
+          <select id="appointment_time" name="appointment_time" required data-selected="{{ form.get('appointment_time', '') }}">
+            <option value="">Select a time slot</option>
+            {% for s in slots %}
+              <option value="{{ s }}" {% if form.get('appointment_time', '') == s %}selected{% endif %}>{{ s|pretty_time }}</option>
+            {% endfor %}
+          </select>
+          <small id="slot-help" class="muted">Choose a doctor and date to see free slots.</small>
+        </div>
+      </div>
+      <div class="field">
+        <label for="reason">Reason for consultation</label>
+        <textarea id="reason" name="reason" rows="4" required minlength="5" maxlength="500">{{ form.get('reason', '') }}</textarea>
+      </div>
+      <p id="form-errors" class="alert alert-error" hidden role="alert"></p>
+      <button class="btn btn-primary" type="submit" id="submit-btn">Confirm Booking</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

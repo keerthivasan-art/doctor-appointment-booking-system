@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Admin | {{ 'Edit' if editing else 'Add' }} Doctor{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container narrow">
+    <h1 class="page-title">{{ 'Edit doctor' if editing else 'Add doctor' }}</h1>
+    <form class="form-card" method="post"
+          action="{{ url_for('admin.doctor_edit', doctor_id=doctor_id) if editing else url_for('admin.doctor_new') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="field"><label for="name">Name</label>
+        <input type="text" id="name" name="name" required maxlength="100" value="{{ doctor.get('name', '') }}"></div>
+      <div class="field"><label for="specialization">Specialization</label>
+        <input type="text" id="specialization" name="specialization" required maxlength="80" value="{{ doctor.get('specialization', '') }}"></div>
+      <div class="field"><label for="qualification">Qualification</label>
+        <input type="text" id="qualification" name="qualification" required maxlength="120" value="{{ doctor.get('qualification', '') }}"></div>
+      <div class="field"><label for="consultation_fee">Consultation fee (&#8377;)</label>
+        <input type="number" id="consultation_fee" name="consultation_fee" required min="0" max="100000" step="0.01" value="{{ doctor.get('consultation_fee', '') }}"></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" type="submit">Save</button>
+        <a class="btn btn-outline" href="{{ url_for('admin.doctors') }}">Cancel</a>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

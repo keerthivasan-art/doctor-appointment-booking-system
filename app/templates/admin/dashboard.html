@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Admin | Appointments{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="admin-head">
+      <h1 class="page-title">Appointments</h1>
+      <div class="btn-row">
+        <a class="btn btn-outline" href="{{ url_for('admin.doctors') }}">Manage Doctors</a>
+        <form method="post" action="{{ url_for('admin.logout') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="btn btn-outline" type="submit">Log out ({{ session.get('admin_name') }})</button>
+        </form>
+      </div>
+    </div>
+    <form class="filter-bar" method="get" action="{{ url_for('admin.dashboard') }}">
+      <div class="field"><label for="appointment_id">Appointment ID</label>
+        <input type="text" id="appointment_id" name="appointment_id" value="{{ f_id }}" placeholder="APT-00012"></div>
+      <div class="field"><label for="date">Date</label>
+        <input type="date" id="date" name="date" value="{{ f_date }}"></div>
+      <div class="field"><label for="status">Status</label>
+        <select id="status" name="status">
+          <option value="">All</option>
+          {% for s in ['Booked','Completed','Cancelled'] %}
+            <option value="{{ s }}" {% if s == f_status %}selected{% endif %}>{{ s }}</option>
+          {% endfor %}
+        </select></div>
+      <button class="btn btn-primary" type="submit">Filter</button>
+      <a class="btn btn-outline" href="{{ url_for('admin.dashboard') }}">Reset</a>
+    </form>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>Patient</th><th>Contact</th><th>Doctor</th><th>Date</th><th>Time</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody>
+        {% for a in appointments %}
+          <tr>
+            <td>{{ a.appointment_id|apt_code }}</td>
+            <td>{{ a.patient_name }}</td>
+            <td>{{ a.patient_email }}<br>{{ a.patient_phone }}</td>
+            <td>{{ a.doctor_name }}<br><span class="muted">{{ a.specialization }}</span></td>
+            <td>{{ a.appointment_date|pretty_date }}</td>
+            <td>{{ a.appointment_time|pretty_time }}</td>
+            <td><span class="badge badge-{{ a.status|lower }}">{{ a.status }}</span></td>
+            <td>
+              {% if a.status == 'Booked' %}
+              <form class="inline" method="post" action="{{ url_for('admin.set_status', appointment_id=a.appointment_id) }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button class="btn btn-small btn-primary" name="status" value="Completed" type="submit">Complete</button>
+                <button class="btn btn-small btn-danger" name="status" value="Cancelled" type="submit">Cancel</button>
+              </form>
+              {% else %}&mdash;{% endif %}
+            </td>
+          </tr>
+        {% else %}
+          <tr><td colspan="8" class="center muted">No appointments found.</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{% endblock %}

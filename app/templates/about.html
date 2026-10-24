@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}About | MediBook{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container narrow">
+    <h1 class="page-title">About this project</h1>
+    <p>MediBook is a Doctor Appointment Booking System built as a Database Management Systems (DBMS) AAT mini-project. It demonstrates a normalized MySQL schema with primary keys, foreign keys, CHECK constraints, a UNIQUE constraint that prevents double booking, indexes and transactions, connected to a Flask web application.</p>
+    <h2>Technology</h2>
+    <ul>
+      <li>Frontend: HTML5, CSS3, vanilla JavaScript</li>
+      <li>Backend: Python 3 and Flask</li>
+      <li>Database: MySQL (parameterized queries)</li>
+    </ul>
+    <h2>Important notice</h2>
+    <p>This is an academic demonstration. Doctor records are fictional sample data. It has not had a security assessment and is not intended for real patient data.</p>
+  </div>
+</section>
+{% endblock %}

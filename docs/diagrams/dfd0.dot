@@ -1,0 +1,14 @@
+digraph DFD0 {
+  rankdir=TB; fontname="Helvetica"; nodesep=1; ranksep=1.2;
+  node [fontname="Helvetica" fontsize=12]; edge [fontname="Helvetica" fontsize=10];
+  P [label="Patient" shape=box style=filled fillcolor="#eaf2ff"];
+  A [label="Administrator" shape=box style=filled fillcolor="#eaf2ff"];
+  S [label="0\nDoctor Appointment\nBooking System" shape=circle style=filled fillcolor="#dbe8ff" width=2.2];
+  D [label="MySQL Database\n(doctors, appointments, admins)" shape=cylinder style=filled fillcolor="#f3f6fb"];
+  P -> S [label="search doctors, booking details,\nappointment ID + email, cancel request"];
+  S -> P [label="doctor list, free slots,\nconfirmation, appointment details"];
+  A -> S [label="login, doctor details,\nstatus updates"];
+  S -> A [label="appointment list,\ndoctor list"];
+  S -> D [label="SQL: insert / select / update"];
+  D -> S [label="rows / errors"];
+}

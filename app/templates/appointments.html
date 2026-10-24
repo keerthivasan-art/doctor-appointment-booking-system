@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Find My Appointment | MediBook{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container narrow">
+    <h1 class="page-title">Find my appointment</h1>
+    <p class="muted">Enter your appointment ID and the email used for booking. To protect patient privacy, appointments are never listed publicly.</p>
+    <form class="form-card" method="post" action="{{ url_for('main.appointments') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="field">
+        <label for="appointment_id">Appointment ID</label>
+        <input type="text" id="appointment_id" name="appointment_id" required placeholder="e.g. APT-00012" value="{{ appointment_id }}">
+      </div>
+      <div class="field">
+        <label for="email">Booking email</label>
+        <input type="email" id="email" name="email" required autocomplete="email">
+      </div>
+      <button class="btn btn-primary" type="submit">Find Appointment</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

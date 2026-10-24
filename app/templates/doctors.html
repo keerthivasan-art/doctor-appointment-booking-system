@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Doctors | MediBook{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <h1 class="page-title">Our Doctors</h1>
+    <p class="muted">Doctor records shown here are fictional sample data for demonstration.</p>
+    <form class="filter-bar" method="get" action="{{ url_for('main.doctors') }}" role="search">
+      <div class="field">
+        <label for="q">Doctor name</label>
+        <input type="search" id="q" name="q" value="{{ q }}" placeholder="Search by name">
+      </div>
+      <div class="field">
+        <label for="specialization">Specialization</label>
+        <select id="specialization" name="specialization">
+          <option value="">All specializations</option>
+          {% for s in specializations %}
+            <option value="{{ s }}" {% if s == selected_spec %}selected{% endif %}>{{ s }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button class="btn btn-primary" type="submit">Search</button>
+      <a class="btn btn-outline" href="{{ url_for('main.doctors') }}">Reset</a>
+    </form>
+
+    {% if doctors %}
+    <div class="card-grid">
+      {% for d in doctors %}
+      <article class="card doctor-card">
+        <div class="avatar" aria-hidden="true">{{ d.name.replace('Dr. ', '')[0] }}</div>
+        <h3>{{ d.name }}</h3>
+        <p class="spec">{{ d.specialization }}</p>
+        <p class="muted">{{ d.qualification }}</p>
+        <p class="fee">&#8377;{{ '%.0f'|format(d.consultation_fee) }} <span class="muted">consultation fee</span></p>
+        <p><span class="badge badge-ok">Available</span></p>
+        <a class="btn btn-primary btn-block" href="{{ url_for('main.book', doctor_id=d.doctor_id) }}">Book Appointment</a>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+      <div class="empty">No doctors match your search.</div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
